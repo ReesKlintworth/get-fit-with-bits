@@ -1,3 +1,6 @@
+.DS_Store
+build*/
+
 node_modules/**/*
-.expo/*
-npm-debug.*
+.expo/**/*
+yarn-error.log
