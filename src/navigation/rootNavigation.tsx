@@ -2,9 +2,10 @@ import React from 'react';
 import { StackNavigator, addNavigationHelpers, NavigationScreenProp } from 'react-navigation';
 import { connect } from 'react-redux';
 import { AppState, Dispatch } from '../redux';
-import Thing from '../components/Thing';
+import Home from '../components/Home';
 import { AppRoutes } from './routes';
 import { addListener } from '../../App';
+import NewWorkout from '../components/NewWorkout';
 
 export interface NavigationProps {
   navigation: NavigationScreenProp<any>;
@@ -13,7 +14,10 @@ export interface NavigationProps {
 export const RootStackNavigator = StackNavigator(
   {
     [AppRoutes.Main]: {
-      screen: Thing,
+      screen: Home,
+    },
+    [AppRoutes.NewWorkout]: {
+      screen: NewWorkout,
     },
   },
   {
