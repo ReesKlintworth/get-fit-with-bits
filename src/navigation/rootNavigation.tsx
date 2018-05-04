@@ -1,5 +1,9 @@
 import React from 'react';
-import { StackNavigator, addNavigationHelpers, NavigationScreenProp } from 'react-navigation';
+import {
+  StackNavigator,
+  addNavigationHelpers,
+  NavigationScreenProp,
+} from 'react-navigation';
 import { connect } from 'react-redux';
 import { AppState, Dispatch } from '../redux';
 import Home from '../components/Home';
@@ -30,8 +34,16 @@ export const RootStackNavigator = StackNavigator(
   }
 );
 
-const AppWithNavigationState = ({ dispatch, nav }: { dispatch: Dispatch; nav: any }) => (
-  <RootStackNavigator navigation={addNavigationHelpers({ dispatch, state: nav, addListener })} />
+const AppWithNavigationState = ({
+  dispatch,
+  nav,
+}: {
+  dispatch: Dispatch;
+  nav: any;
+}) => (
+  <RootStackNavigator
+    navigation={addNavigationHelpers({ dispatch, state: nav, addListener })}
+  />
 );
 
 const mapStateToProps = (state: AppState) => ({
