@@ -18,14 +18,14 @@ export default function workoutsReducer(
       return {
         ...state,
         workouts: state.workouts.concat(
-          new Workout(uuidv4(), action.name, action.date)
+          new Workout(uuidv4(), action.payload.name, action.payload.date)
         ),
       };
     case Keys.WorkoutDelete:
       return {
         ...state,
         workouts: state.workouts.filter(workout => {
-          return workout.id !== action.id;
+          return workout.id !== action.payload;
         }),
       };
     default:

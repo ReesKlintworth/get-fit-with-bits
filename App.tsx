@@ -1,25 +1,49 @@
 import React from 'react';
 import { Platform, StatusBar, StyleSheet, View } from 'react-native';
-import { createReactNavigationReduxMiddleware, createReduxBoundAddListener } from 'react-navigation-redux-helpers';
+import {
+  createReactNavigationReduxMiddleware,
+  createReduxBoundAddListener,
+} from 'react-navigation-redux-helpers';
 import { Provider } from 'react-redux';
 import { applyMiddleware, createStore } from 'redux';
+import { persistReducer, persistStore } from 'redux-persist';
+import { PersistGate } from 'redux-persist/integration/react';
+import thunk from 'redux-thunk';
 import AppWithNavigationState from './src/navigation/rootNavigation';
 import reducers, { AppState } from './src/redux';
+import storage from 'redux-persist/lib/storage';
 
-const navMiddleware = createReactNavigationReduxMiddleware('root', (state: AppState) => state.nav);
+const navMiddleware = createReactNavigationReduxMiddleware(
+  'root',
+  (state: AppState) => state.nav
+);
 
 export const addListener = createReduxBoundAddListener('root');
+
+const persistConfig = {
+  key: 'root',
+  storage,
+  blacklist: ['nav'],
+};
 
 export default class App extends React.Component {
   render() {
     // @ts-ignore
-    const store = createStore(reducers, {}, applyMiddleware(navMiddleware));
+    const persistedReducer = persistReducer(persistConfig, reducers);
+    const store = createStore(
+      persistedReducer,
+      {},
+      applyMiddleware(navMiddleware, thunk)
+    );
+    const persistor = persistStore(store);
     return (
       <Provider store={store}>
-        <View style={styles.container}>
-          {Platform.OS === 'ios' && <StatusBar barStyle="default" />}
-          <AppWithNavigationState />
-        </View>
+        <PersistGate loading={null} persistor={persistor}>
+          <View style={styles.container}>
+            {Platform.OS === 'ios' && <StatusBar barStyle="default" />}
+            <AppWithNavigationState />
+          </View>
+        </PersistGate>
       </Provider>
     );
   }

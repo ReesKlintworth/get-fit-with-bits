@@ -1,41 +1,49 @@
 import { NavigationActions } from 'react-navigation';
 import { AppRoutes } from '../navigation/routes';
-import { StringTypeAction } from '.';
+import { Dispatch } from './';
 
 export enum Keys {
   WorkoutAdd = 'WorkoutAdd',
   WorkoutDelete = 'WorkoutDelete',
 }
 
-export type WorkoutActionTypes = WorkoutAdd | WorkoutDelete;
-
-export interface WorkoutAdd extends StringTypeAction {
+export interface WorkoutAdd {
   readonly type: Keys.WorkoutAdd;
-  readonly name: string;
-  readonly date: Date;
+  readonly payload: {
+    readonly name: string;
+    readonly date: Date;
+  };
 }
 
-export interface WorkoutDelete extends StringTypeAction {
+export interface WorkoutDelete {
   readonly type: Keys.WorkoutDelete;
-  readonly id: string;
+  readonly payload: string;
 }
+
+export type WorkoutActionTypes = WorkoutAdd | WorkoutDelete;
 
 export const newWorkout = () =>
   NavigationActions.navigate({
     routeName: AppRoutes.NewWorkout,
   });
 
-export const addWorkout = (name: string, date: Date): WorkoutAdd => {
-  return {
-    type: Keys.WorkoutAdd,
-    name,
-    date,
+export const saveNewWorkout = (name: string, date: Date) => {
+  return (dispatch: Dispatch) => {
+    const addWorkoutAction: WorkoutAdd = {
+      type: Keys.WorkoutAdd,
+      payload: {
+        name,
+        date,
+      },
+    };
+    dispatch(addWorkoutAction);
+    dispatch(NavigationActions.back({}));
   };
 };
 
 export const deleteWorkout = (id: string): WorkoutDelete => {
   return {
     type: Keys.WorkoutDelete,
-    id,
+    payload: id,
   };
 };
