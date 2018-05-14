@@ -46,7 +46,7 @@ class NewWorkout extends React.PureComponent<Props, LocalState> {
     return (
       <View style={styles.container}>
         <SafeAreaView style={styles.safeArea}>
-          <ScrollView>
+          <ScrollView style={styles.scrollView}>
             <Text style={styles.prompt}>New Workout</Text>
             <Input
               defaultValue={this.state.name}
