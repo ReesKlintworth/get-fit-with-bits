@@ -1,4 +1,4 @@
 export const AppRoutes = {
   Main: 'main',
-  NewWorkout: 'new_workout',
+  EditWorkout: 'edit_workout',
 };

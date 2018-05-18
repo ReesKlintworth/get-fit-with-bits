@@ -2,12 +2,10 @@ import { Keys, WorkoutActionTypes } from './actions';
 import { Workout } from '../types';
 
 export interface Workouts {
-  workouts: Workout[];
+  [workoutId: string]: Workout;
 }
 
-const initialState = {
-  workouts: [],
-};
+const initialState = {};
 
 export default function workoutsReducer(
   state: Workouts = initialState,
@@ -15,19 +13,33 @@ export default function workoutsReducer(
 ): Workouts {
   switch (action.type) {
     case Keys.WorkoutAdd:
+      const newWorkout = new Workout(
+        uuidv4(),
+        action.payload.name,
+        action.payload.date
+      );
       return {
         ...state,
-        workouts: state.workouts.concat(
-          new Workout(uuidv4(), action.payload.name, action.payload.date)
-        ),
+        [newWorkout.id]: newWorkout,
       };
     case Keys.WorkoutDelete:
-      return {
-        ...state,
-        workouts: state.workouts.filter(workout => {
-          return workout.id !== action.payload;
-        }),
-      };
+      const workoutsObjAfterDelete = { ...state };
+      delete workoutsObjAfterDelete[action.payload];
+      return workoutsObjAfterDelete;
+    case Keys.WorkoutSave:
+      const existingWorkout = state[action.payload.workoutId];
+      if (existingWorkout) {
+        const editedWorkout = new Workout(
+          existingWorkout.id,
+          action.payload.name,
+          existingWorkout.date
+        );
+        return {
+          ...state,
+          [editedWorkout.id]: editedWorkout,
+        };
+      }
+      return state;
     default:
       return state;
   }

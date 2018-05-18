@@ -9,7 +9,7 @@ import { AppState, Dispatch } from '../redux';
 import Home from '../components/Home';
 import { AppRoutes } from './routes';
 import { addListener } from '../../App';
-import NewWorkout from '../components/NewWorkout';
+import EditWorkout from '../components/EditWorkout';
 
 export interface NavigationProps {
   navigation: NavigationScreenProp<any>;
@@ -20,8 +20,8 @@ export const RootStackNavigator = StackNavigator(
     [AppRoutes.Main]: {
       screen: Home,
     },
-    [AppRoutes.NewWorkout]: {
-      screen: NewWorkout,
+    [AppRoutes.EditWorkout]: {
+      screen: EditWorkout,
     },
   },
   {

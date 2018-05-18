@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import { newWorkout } from '../redux/actions';
 import { Dispatch, AppState } from '../redux';
 import { NavigationProps } from '../navigation/rootNavigation';
+import { values } from '../util';
 
 import WorkoutList from './WorkoutList';
 import { Workout } from '../types';
@@ -43,8 +44,10 @@ const mapDispatchToProps = (dispatch: Dispatch): ActionProps => {
 };
 
 const mapStateToProps = (state: AppState): StateProps => {
+  const { workouts } = state;
+  const workoutsArray = values(workouts);
   return {
-    workouts: state.workouts.workouts,
+    workouts: workoutsArray,
   };
 };
 

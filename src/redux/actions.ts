@@ -4,6 +4,7 @@ import { Dispatch } from './';
 
 export enum Keys {
   WorkoutAdd = 'WorkoutAdd',
+  WorkoutSave = 'WorkoutSave',
   WorkoutDelete = 'WorkoutDelete',
 }
 
@@ -15,16 +16,32 @@ export interface WorkoutAdd {
   };
 }
 
+export interface WorkoutSave {
+  readonly type: Keys.WorkoutSave;
+  readonly payload: {
+    readonly workoutId: string;
+    readonly name: string;
+  };
+}
+
 export interface WorkoutDelete {
   readonly type: Keys.WorkoutDelete;
   readonly payload: string;
 }
 
-export type WorkoutActionTypes = WorkoutAdd | WorkoutDelete;
+export type WorkoutActionTypes = WorkoutAdd | WorkoutDelete | WorkoutSave;
 
 export const newWorkout = () =>
   NavigationActions.navigate({
-    routeName: AppRoutes.NewWorkout,
+    routeName: AppRoutes.EditWorkout,
+  });
+
+export const editWorkout = (workoutId: string) =>
+  NavigationActions.navigate({
+    routeName: AppRoutes.EditWorkout,
+    params: {
+      workoutId,
+    },
   });
 
 export const saveNewWorkout = (name: string, date: Date) => {
@@ -37,6 +54,20 @@ export const saveNewWorkout = (name: string, date: Date) => {
       },
     };
     dispatch(addWorkoutAction);
+    dispatch(NavigationActions.back({}));
+  };
+};
+
+export const saveExistingWorkout = (workoutId: string, name: string) => {
+  return (dispatch: Dispatch) => {
+    const saveWorkoutAction: WorkoutSave = {
+      type: Keys.WorkoutSave,
+      payload: {
+        workoutId,
+        name,
+      },
+    };
+    dispatch(saveWorkoutAction);
     dispatch(NavigationActions.back({}));
   };
 };

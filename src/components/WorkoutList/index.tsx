@@ -8,7 +8,9 @@ interface Props {
 }
 
 export default class WorkoutList extends React.PureComponent<Props> {
-  extractKey = ({ id }: Workout) => id;
+  extractKey = ({ id }: Workout) => {
+    return id;
+  };
 
   renderItem = ({ item: workout }: ListRenderItemInfo<Workout>) => {
     return <WorkoutItem workout={workout} />;
