@@ -1,35 +1,43 @@
-import { NavigationActions } from 'react-navigation';
+import { NavigationActions, NavigationAction } from 'react-navigation';
 import { AppRoutes } from '../navigation/routes';
 import { Dispatch } from './';
 
-export enum Keys {
+export enum ActionKeys {
   WorkoutAdd = 'WorkoutAdd',
   WorkoutSave = 'WorkoutSave',
   WorkoutDelete = 'WorkoutDelete',
 }
 
-export interface WorkoutAdd {
-  readonly type: Keys.WorkoutAdd;
-  readonly payload: {
-    readonly name: string;
-    readonly date: Date;
-  };
+export interface Action<P> {
+  readonly type: ActionKeys;
+  readonly payload: P;
 }
 
-export interface WorkoutSave {
-  readonly type: Keys.WorkoutSave;
-  readonly payload: {
-    readonly workoutId: string;
-    readonly name: string;
-  };
+export interface WorkoutAdd
+  extends Action<{
+      readonly name: string;
+      readonly date: Date;
+    }> {
+  type: ActionKeys.WorkoutAdd;
 }
 
-export interface WorkoutDelete {
-  readonly type: Keys.WorkoutDelete;
-  readonly payload: string;
+export interface WorkoutSave
+  extends Action<{
+      readonly workoutId: string;
+      readonly name: string;
+    }> {
+  type: ActionKeys.WorkoutSave;
 }
 
-export type WorkoutActionTypes = WorkoutAdd | WorkoutDelete | WorkoutSave;
+export interface WorkoutDelete extends Action<string> {
+  type: ActionKeys.WorkoutDelete;
+}
+
+export type ActionTypes =
+  | WorkoutAdd
+  | WorkoutDelete
+  | WorkoutSave
+  | NavigationAction;
 
 export const newWorkout = () =>
   NavigationActions.navigate({
@@ -47,7 +55,7 @@ export const editWorkout = (workoutId: string) =>
 export const saveNewWorkout = (name: string, date: Date) => {
   return (dispatch: Dispatch) => {
     const addWorkoutAction: WorkoutAdd = {
-      type: Keys.WorkoutAdd,
+      type: ActionKeys.WorkoutAdd,
       payload: {
         name,
         date,
@@ -61,7 +69,7 @@ export const saveNewWorkout = (name: string, date: Date) => {
 export const saveExistingWorkout = (workoutId: string, name: string) => {
   return (dispatch: Dispatch) => {
     const saveWorkoutAction: WorkoutSave = {
-      type: Keys.WorkoutSave,
+      type: ActionKeys.WorkoutSave,
       payload: {
         workoutId,
         name,
@@ -74,7 +82,7 @@ export const saveExistingWorkout = (workoutId: string, name: string) => {
 
 export const deleteWorkout = (id: string): WorkoutDelete => {
   return {
-    type: Keys.WorkoutDelete,
+    type: ActionKeys.WorkoutDelete,
     payload: id,
   };
 };

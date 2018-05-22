@@ -1,4 +1,4 @@
-import { Keys, WorkoutActionTypes } from './actions';
+import { ActionKeys, ActionTypes } from './actions';
 import { Workout } from '../types';
 
 export interface Workouts {
@@ -9,10 +9,10 @@ const initialState = {};
 
 export default function workoutsReducer(
   state: Workouts = initialState,
-  action: WorkoutActionTypes
+  action: ActionTypes
 ): Workouts {
   switch (action.type) {
-    case Keys.WorkoutAdd:
+    case ActionKeys.WorkoutAdd:
       const newWorkout = new Workout(
         uuidv4(),
         action.payload.name,
@@ -22,11 +22,11 @@ export default function workoutsReducer(
         ...state,
         [newWorkout.id]: newWorkout,
       };
-    case Keys.WorkoutDelete:
+    case ActionKeys.WorkoutDelete:
       const workoutsObjAfterDelete = { ...state };
       delete workoutsObjAfterDelete[action.payload];
       return workoutsObjAfterDelete;
-    case Keys.WorkoutSave:
+    case ActionKeys.WorkoutSave:
       const existingWorkout = state[action.payload.workoutId];
       if (existingWorkout) {
         const editedWorkout = new Workout(

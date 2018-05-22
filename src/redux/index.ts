@@ -11,7 +11,6 @@ export interface AppState {
 
 export type Dispatch = ReduxDispatch<AppState>;
 
-// @ts-ignore
 export default combineReducers<AppState>({
   nav,
   workouts,
