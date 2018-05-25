@@ -6,20 +6,24 @@ import styles from './style';
 interface Props {
   onPress: () => void;
   title: string;
-  disabled: boolean;
+  disabled?: boolean;
+  style?: any; // TODO - refine
 }
 
 export default class Button extends React.PureComponent<Props> {
   render() {
-    const { onPress, title, disabled } = this.props;
-    const containerStyle = [styles.container];
-    if (disabled) {
-      containerStyle.push(styles.disabled);
+    const { onPress, title, disabled, style } = this.props;
+    const containerStyles = [styles.container];
+    if (!!disabled) {
+      containerStyles.push(styles.disabled);
+    }
+    if (!!style) {
+      containerStyles.push(style);
     }
     return (
       <TouchableOpacity
         disabled={disabled}
-        style={containerStyle}
+        style={containerStyles}
         onPress={onPress}>
         <Text style={styles.title}>{title}</Text>
       </TouchableOpacity>

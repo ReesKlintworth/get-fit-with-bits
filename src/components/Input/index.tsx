@@ -2,19 +2,28 @@ import React from 'react';
 import { View, TextInput } from 'react-native';
 
 import styles from './style';
+import Colors from '../../Colors';
 
 interface Props {
   onChangeText: (newText: string) => void;
-  defaultValue?: string;
+  value: string;
+  placeholder?: string;
+  style?: any; // TODO - refine
 }
 
 export default class Input extends React.PureComponent<Props> {
   render() {
-    const { onChangeText, defaultValue } = this.props;
+    const { onChangeText, value, style, placeholder } = this.props;
+    const containerStyles = [styles.container];
+    if (!!style) {
+      containerStyles.push(style);
+    }
     return (
-      <View style={styles.container}>
+      <View style={containerStyles}>
         <TextInput
-          defaultValue={defaultValue}
+          value={value}
+          placeholder={placeholder}
+          placeholderTextColor={Colors.leTextNonessential}
           style={styles.input}
           onChangeText={onChangeText}
         />

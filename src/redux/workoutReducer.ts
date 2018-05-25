@@ -16,6 +16,7 @@ export default function workoutsReducer(
       const newWorkout = new Workout(
         uuidv4(),
         action.payload.name,
+        action.payload.type,
         action.payload.date
       );
       return {
@@ -32,6 +33,7 @@ export default function workoutsReducer(
         const editedWorkout = new Workout(
           existingWorkout.id,
           action.payload.name,
+          action.payload.type,
           existingWorkout.date
         );
         return {

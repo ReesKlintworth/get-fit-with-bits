@@ -3,6 +3,8 @@ import { FlatList, View, ListRenderItemInfo } from 'react-native';
 import { Workout } from '../../types';
 import WorkoutItem from './WorkoutItem';
 
+import styles from './style';
+
 interface Props {
   workouts: Workout[];
 }
@@ -17,14 +19,14 @@ export default class WorkoutList extends React.PureComponent<Props> {
   };
 
   ItemSeparatorComponent = () => {
-    return <View style={{ height: 1, backgroundColor: 'black' }} />;
+    return <View style={styles.separator} />;
   };
 
   render() {
     const { workouts } = this.props;
     return (
       <FlatList
-        style={{ flex: 1 }}
+        style={styles.flatlist}
         data={workouts}
         keyExtractor={this.extractKey}
         renderItem={this.renderItem}

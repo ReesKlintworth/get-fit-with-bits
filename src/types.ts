@@ -1,4 +1,9 @@
 /* tslint:disable:max-classes-per-file */
 export class Workout {
-  constructor(public id: string, public name: string, public date: Date) {}
+  constructor(
+    public id: string,
+    public name: string,
+    public type: string,
+    public date: Date
+  ) {}
 }

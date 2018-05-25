@@ -16,6 +16,7 @@ export interface Action<P> {
 export interface WorkoutAdd
   extends Action<{
       readonly name: string;
+      readonly type: string;
       readonly date: Date;
     }> {
   type: ActionKeys.WorkoutAdd;
@@ -25,6 +26,7 @@ export interface WorkoutSave
   extends Action<{
       readonly workoutId: string;
       readonly name: string;
+      readonly type: string;
     }> {
   type: ActionKeys.WorkoutSave;
 }
@@ -52,13 +54,14 @@ export const editWorkout = (workoutId: string) =>
     },
   });
 
-export const saveNewWorkout = (name: string, date: Date) => {
+export const saveNewWorkout = (name: string, type: string, date: Date) => {
   return (dispatch: Dispatch) => {
     const addWorkoutAction: WorkoutAdd = {
       type: ActionKeys.WorkoutAdd,
       payload: {
         name,
         date,
+        type,
       },
     };
     dispatch(addWorkoutAction);
@@ -66,13 +69,18 @@ export const saveNewWorkout = (name: string, date: Date) => {
   };
 };
 
-export const saveExistingWorkout = (workoutId: string, name: string) => {
+export const saveExistingWorkout = (
+  workoutId: string,
+  name: string,
+  type: string
+) => {
   return (dispatch: Dispatch) => {
     const saveWorkoutAction: WorkoutSave = {
       type: ActionKeys.WorkoutSave,
       payload: {
         workoutId,
         name,
+        type,
       },
     };
     dispatch(saveWorkoutAction);

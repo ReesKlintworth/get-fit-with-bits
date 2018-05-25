@@ -15,7 +15,7 @@ export default StyleSheet.create({
   },
   title: {
     fontSize: 17,
-    fontWeight: '600',
+    fontWeight: 'bold',
     color: Colors.leBtnStandardPrimaryLabel,
   },
 });

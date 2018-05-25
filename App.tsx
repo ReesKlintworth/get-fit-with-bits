@@ -36,6 +36,7 @@ export default class App extends React.Component {
       applyMiddleware(navMiddleware, thunk)
     );
     const persistor = persistStore(store);
+    // persistor.purge();
     return (
       <Provider store={store}>
         <PersistGate loading={null} persistor={persistor}>

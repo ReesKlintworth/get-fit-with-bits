@@ -11,9 +11,26 @@ export default StyleSheet.create({
     paddingHorizontal: 16,
     paddingTop: 8,
   },
-  safeArea: { flex: 1, width: '100%' },
   prompt: {
     fontWeight: 'bold',
-    color: Colors.leTextContrast,
+    color: Colors.leTextSubtle,
+    marginBottom: 8,
+    fontSize: 14,
+  },
+  input: {
+    marginBottom: 24,
+  },
+  messageContainer: {
+    backgroundColor: Colors.utilityCritical,
+    paddingHorizontal: 16,
+    paddingVertical: 8,
+    marginBottom: 24,
+    alignItems: 'center',
+    borderRadius: 4,
+  },
+  message: {
+    color: Colors.leBtnStandardPrimaryLabel,
+    fontWeight: '700',
+    fontSize: 12,
   },
 });

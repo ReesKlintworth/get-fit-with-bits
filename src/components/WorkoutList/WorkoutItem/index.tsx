@@ -19,11 +19,6 @@ interface DispatchProps {
 type Props = OwnProps & DispatchProps;
 
 class WorkoutItem extends React.PureComponent<Props> {
-  constructor(props: Props) {
-    super(props);
-    this.tappedWorkout = this.tappedWorkout.bind(this);
-  }
-
   tappedWorkout = () => {
     this.props.editWorkout(this.props.workout.id);
   };
@@ -31,7 +26,8 @@ class WorkoutItem extends React.PureComponent<Props> {
   render() {
     return (
       <TouchableOpacity style={styles.container} onPress={this.tappedWorkout}>
-        <Text style={styles.text}>{this.props.workout.name}</Text>
+        <Text style={styles.name}>{this.props.workout.name}</Text>
+        <Text style={styles.type}>{this.props.workout.type}</Text>
       </TouchableOpacity>
     );
   }

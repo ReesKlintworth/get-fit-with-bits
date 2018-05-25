@@ -1,11 +1,21 @@
 import { StyleSheet } from 'react-native';
+import Colors from '../../../Colors';
 
 export default StyleSheet.create({
   container: {
-    height: 44,
-    justifyContent: 'center',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    paddingVertical: 16,
+    flexDirection: 'row',
+    paddingRight: 16,
   },
-  text: {
+  name: {
     fontSize: 16,
+    color: Colors.leTextContrast,
+    fontWeight: '700',
+  },
+  type: {
+    fontSize: 16,
+    color: Colors.leTextDefault,
   },
 });

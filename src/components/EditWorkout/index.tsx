@@ -12,6 +12,7 @@ import Button from '../Button';
 import Input from '../Input';
 
 import styles from './style';
+import sharedStyles from '../sharedStyles';
 
 type OwnProps = NavigationProps;
 
@@ -20,17 +21,27 @@ interface StateProps {
 }
 
 interface ActionProps {
-  readonly saveNewWorkout: (name: string, date: Date) => void;
-  readonly saveExistingWorkout: (workoutId: string, name: string) => void;
+  readonly saveNewWorkout: (name: string, type: string, date: Date) => void;
+  readonly saveExistingWorkout: (
+    workoutId: string,
+    name: string,
+    type: string
+  ) => void;
 }
 
 interface LocalState {
   name: string;
+  type: string;
+  message: string | null;
 }
 
 type Props = ActionProps & OwnProps & StateProps;
 
 class EditWorkout extends React.PureComponent<Props, LocalState> {
+  static navigationOptions = {
+    title: 'Edit Workout',
+  };
+
   constructor(props: Props) {
     super(props);
     this.nameChanged = this.nameChanged.bind(this);
@@ -38,18 +49,28 @@ class EditWorkout extends React.PureComponent<Props, LocalState> {
     const name = !!this.props.workout
       ? this.props.workout.name
       : `${new Date().toLocaleDateString()} Workout`;
+    const type = !!this.props.workout ? this.props.workout.type : '';
 
     this.state = {
       name,
+      type,
+      message: null,
     };
   }
 
   saveWorkout = () => {
     const { workout } = this.props;
-    if (workout) {
-      this.props.saveExistingWorkout(workout.id, this.state.name);
+    const { name, type } = this.state;
+    if (!type.length) {
+      this.setState({ message: 'Please enter a workout type.' });
+      return;
     } else {
-      this.props.saveNewWorkout(this.state.name, new Date());
+      this.setState({ message: null });
+    }
+    if (workout) {
+      this.props.saveExistingWorkout(workout.id, name, type);
+    } else {
+      this.props.saveNewWorkout(name, type, new Date());
     }
   };
 
@@ -59,18 +80,39 @@ class EditWorkout extends React.PureComponent<Props, LocalState> {
     });
   };
 
+  typeChanged = (text: string) => {
+    this.setState({
+      type: text,
+    });
+  };
+
   render() {
-    const buttonDisabled = this.state.name.trim().length === 0;
+    const buttonDisabled =
+      this.state.name.trim().length === 0 ||
+      this.state.type.trim().length === 0;
     const buttonText = !!this.props.workout ? 'Save' : 'Create';
 
     return (
       <View style={styles.container}>
-        <SafeAreaView style={styles.safeArea}>
+        <SafeAreaView style={sharedStyles.safeArea}>
           <ScrollView style={styles.scrollView}>
-            <Text style={styles.prompt}>New Workout</Text>
+            {!!this.state.message ? (
+              <View style={styles.messageContainer}>
+                <Text style={styles.message}>{this.state.message}</Text>
+              </View>
+            ) : null}
+            <Text style={styles.prompt}>Workout Name</Text>
             <Input
-              defaultValue={this.state.name}
+              value={this.state.name}
               onChangeText={this.nameChanged}
+              style={styles.input}
+            />
+            <Text style={styles.prompt}>Workout Type</Text>
+            <Input
+              value={this.state.type}
+              placeholder="Run, swim, weights, etc."
+              onChangeText={this.typeChanged}
+              style={styles.input}
             />
             <Button
               disabled={buttonDisabled}
