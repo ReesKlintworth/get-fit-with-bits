@@ -13,6 +13,9 @@ export default StyleSheet.create({
   disabled: {
     backgroundColor: Colors.leBtnStandardDisabledBg,
   },
+  destructive: {
+    backgroundColor: Colors.leBtnStandardDestroyBg,
+  },
   title: {
     fontSize: 17,
     fontWeight: 'bold',

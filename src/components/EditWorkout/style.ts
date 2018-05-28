@@ -33,4 +33,7 @@ export default StyleSheet.create({
     fontWeight: '700',
     fontSize: 12,
   },
+  button: {
+    marginBottom: 8,
+  },
 });

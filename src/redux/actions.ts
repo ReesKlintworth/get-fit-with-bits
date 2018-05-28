@@ -88,9 +88,13 @@ export const saveExistingWorkout = (
   };
 };
 
-export const deleteWorkout = (id: string): WorkoutDelete => {
-  return {
-    type: ActionKeys.WorkoutDelete,
-    payload: id,
+export const deleteWorkout = (id: string) => {
+  return (dispatch: Dispatch) => {
+    const deleteWorkoutAction: WorkoutDelete = {
+      type: ActionKeys.WorkoutDelete,
+      payload: id,
+    };
+    dispatch(deleteWorkoutAction);
+    dispatch(NavigationActions.back({}));
   };
 };

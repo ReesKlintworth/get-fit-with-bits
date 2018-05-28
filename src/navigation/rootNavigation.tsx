@@ -10,6 +10,7 @@ import Home from '../components/Home';
 import { AppRoutes } from './routes';
 import { addListener } from '../../App';
 import EditWorkout from '../components/EditWorkout';
+import Camera from '../components/Camera';
 
 export interface NavigationProps {
   navigation: NavigationScreenProp<any>;
@@ -22,6 +23,9 @@ export const RootStackNavigator = StackNavigator(
     },
     [AppRoutes.EditWorkout]: {
       screen: EditWorkout,
+    },
+    [AppRoutes.Camera]: {
+      screen: Camera,
     },
   },
   {
