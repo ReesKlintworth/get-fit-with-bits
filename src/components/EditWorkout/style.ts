@@ -7,9 +7,11 @@ export default StyleSheet.create({
     width: '100%',
     alignItems: 'center',
   },
-  scrollView: {
+  content: {
     paddingHorizontal: 16,
-    paddingTop: 8,
+    paddingVertical: 8,
+    flex: 1,
+    width: '100%',
   },
   prompt: {
     fontWeight: 'bold',
@@ -35,5 +37,13 @@ export default StyleSheet.create({
   },
   button: {
     marginBottom: 8,
+  },
+  bottomButtonsContainer: {
+    position: 'absolute',
+    left: 0,
+    bottom: 0,
+    right: 0,
+    paddingBottom: 8,
+    paddingHorizontal: 16,
   },
 });

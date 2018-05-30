@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, SafeAreaView, Text, ScrollView } from 'react-native';
+import { View, SafeAreaView, Text } from 'react-native';
 import { NavigationProps } from '../../navigation/rootNavigation';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
@@ -115,7 +115,7 @@ class EditWorkout extends React.PureComponent<Props, LocalState> {
     return (
       <View style={styles.container}>
         <SafeAreaView style={sharedStyles.safeArea}>
-          <View style={styles.scrollView}>
+          <View style={styles.content}>
             {!!this.state.message ? (
               <View style={styles.messageContainer}>
                 <Text style={styles.message}>{this.state.message}</Text>
@@ -139,20 +139,22 @@ class EditWorkout extends React.PureComponent<Props, LocalState> {
               onPress={this.goToCamera}
               title="Add Image"
             />
-            <Button
-              style={styles.button}
-              disabled={buttonDisabled}
-              onPress={this.saveWorkout}
-              title={buttonText}
-            />
-            {isEditing ? (
+            <View style={styles.bottomButtonsContainer}>
               <Button
                 style={styles.button}
-                onPress={this.deleteWorkout}
-                title="Delete"
-                destructive={true}
+                disabled={buttonDisabled}
+                onPress={this.saveWorkout}
+                title={buttonText}
               />
-            ) : null}
+              {isEditing ? (
+                <Button
+                  style={styles.button}
+                  onPress={this.deleteWorkout}
+                  title="Delete"
+                  destructive={true}
+                />
+              ) : null}
+            </View>
           </View>
         </SafeAreaView>
       </View>

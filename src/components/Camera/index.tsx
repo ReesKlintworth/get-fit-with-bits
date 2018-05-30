@@ -6,9 +6,11 @@ import sharedStyles from '../sharedStyles';
 import Colors from '../../Colors';
 
 const STORAGE_DIR = 'photos';
+const CAMERA_BACK = 'back';
+const CAMERA_FRONT = 'front';
 
 interface LocalState {
-  type: any; // TODO - refine
+  type: string;
   hasCameraPermission: null | boolean;
   // photoId: number;
   showImage: boolean;
@@ -22,8 +24,7 @@ export default class CameraComponent extends React.Component<{}, LocalState> {
 
     this.camera = null;
     this.state = {
-      // @ts-ignore
-      type: Camera.Constants.Type.back,
+      type: CAMERA_BACK,
       hasCameraPermission: null,
       // photoId: 1,
       showImage: false,
@@ -46,13 +47,7 @@ export default class CameraComponent extends React.Component<{}, LocalState> {
 
   flipCamera = () => {
     this.setState({
-      type:
-        // @ts-ignore
-        this.state.type === Camera.Constants.Type.back
-          ? // @ts-ignore
-            Camera.Constants.Type.front
-          : // @ts-ignore
-            Camera.Constants.Type.back,
+      type: this.state.type === CAMERA_BACK ? CAMERA_FRONT : CAMERA_BACK,
     });
   };
 
@@ -101,8 +96,7 @@ export default class CameraComponent extends React.Component<{}, LocalState> {
         <View style={{ flex: 1 }}>
           <SafeAreaView style={sharedStyles.safeArea}>
             <Camera
-              // @ts-ignore */
-              ref={ref => {
+              ref={(ref: any) => {
                 this.camera = ref;
               }}
               style={{ flex: 1, justifyContent: 'flex-end' }}

@@ -90,7 +90,7 @@ const mapStateToProps = (state: AppState) => {
 
 const Index = connect(mapStateToProps)(App);
 
-export default (AppContainer = () => {
+export default () => {
   return (
     <Provider store={store}>
       <PersistGate loading={null} persistor={persistor}>
@@ -98,7 +98,7 @@ export default (AppContainer = () => {
       </PersistGate>
     </Provider>
   );
-});
+};
 
 const styles = StyleSheet.create({
   container: {
