@@ -1,5 +1,4 @@
-import { ActionKeys, ActionTypes } from './actions';
-import { Workout } from '../types';
+import { ActionTypes } from './actions';
 import { Workouts } from './stateTypes';
 
 const initialState = {};
@@ -9,43 +8,12 @@ export default function workoutsReducer(
   action: ActionTypes
 ): Workouts {
   switch (action.type) {
-    case ActionKeys.WorkoutAdd:
-      const newWorkout = new Workout(
-        uuidv4(),
-        action.payload.name,
-        action.payload.type,
-        action.payload.date,
-        action.payload.imageUri
-      );
-      return {
-        ...state,
-        [newWorkout.id]: newWorkout,
-      };
-    case ActionKeys.WorkoutDelete:
-      const workoutsObjAfterDelete = { ...state };
-      delete workoutsObjAfterDelete[action.payload];
-      return workoutsObjAfterDelete;
-    case ActionKeys.WorkoutSave:
-      const existingWorkout = state[action.payload.workoutId];
-      if (existingWorkout) {
-        const editedWorkout = new Workout(
-          existingWorkout.id,
-          action.payload.name,
-          action.payload.type,
-          existingWorkout.date,
-          action.payload.imageUri
-        );
-        return {
-          ...state,
-          [editedWorkout.id]: editedWorkout,
-        };
-      }
-      return state;
     default:
       return state;
   }
 }
 
+// @ts-ignore
 const uuidv4 = (): string => {
   return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, c => {
     // tslint:disable-next-line:no-bitwise

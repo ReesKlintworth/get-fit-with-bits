@@ -1,26 +1,18 @@
 import React from 'react';
 import { Text, TouchableOpacity } from 'react-native';
 import { Workout } from '../../../types';
-import { editWorkout } from '../../../redux/actions';
 
 import styles from './style';
-import { connect } from 'react-redux';
-import { Dispatch } from '../../../redux';
-import { bindActionCreators } from 'redux';
 
 interface OwnProps {
   workout: Workout;
 }
 
-interface DispatchProps {
-  readonly editWorkout: (workoutId: string) => void;
-}
+type Props = OwnProps;
 
-type Props = OwnProps & DispatchProps;
-
-class WorkoutItem extends React.PureComponent<Props> {
+export default class WorkoutItem extends React.PureComponent<Props> {
   tappedWorkout = () => {
-    this.props.editWorkout(this.props.workout.id);
+    // TODO
   };
 
   render() {
@@ -32,11 +24,3 @@ class WorkoutItem extends React.PureComponent<Props> {
     );
   }
 }
-
-const mapDispatchToProps = (dispatch: Dispatch): DispatchProps => {
-  return {
-    editWorkout: bindActionCreators(editWorkout, dispatch),
-  };
-};
-
-export default connect(null, mapDispatchToProps)(WorkoutItem);

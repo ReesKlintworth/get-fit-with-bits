@@ -6,26 +6,18 @@ import sharedStyles from '../sharedStyles';
 import Colors from '../../Colors';
 import Preview from './Preview';
 import { STORAGE_DIR, TEMP_PATH } from './constants';
-import { changeImage } from '../../redux/actions';
 import { NavigationProps } from '../../navigation/rootNavigation';
-import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
-import { Dispatch } from '../../redux';
 
 const CAMERA_BACK = 'back';
-const CAMERA_FRONT = 'front';
+// const CAMERA_FRONT = 'front';
 
 interface StateProps {
   workoutId: string;
 }
 
-interface ActionProps {
-  readonly changeImage: (uri: string) => void;
-}
-
 type OwnProps = NavigationProps;
 
-type Props = ActionProps & StateProps & OwnProps;
+type Props = StateProps & OwnProps;
 
 interface LocalState {
   type: string;
@@ -33,7 +25,10 @@ interface LocalState {
   showImage: boolean;
 }
 
-class CameraComponent extends React.Component<Props, LocalState> {
+export default class CameraComponent extends React.Component<
+  Props,
+  LocalState
+> {
   camera: CameraObject | null;
 
   constructor(props: any) {
@@ -60,12 +55,6 @@ class CameraComponent extends React.Component<Props, LocalState> {
       return;
     });
   }
-
-  flipCamera = () => {
-    this.setState({
-      type: this.state.type === CAMERA_BACK ? CAMERA_FRONT : CAMERA_BACK,
-    });
-  };
 
   renderNoPermissions = () => {
     return (
@@ -108,8 +97,6 @@ class CameraComponent extends React.Component<Props, LocalState> {
     FileSystem.moveAsync({
       from: tempUri,
       to: finalDestination,
-    }).then(() => {
-      this.props.changeImage(finalDestination);
     });
   };
 
@@ -144,19 +131,6 @@ class CameraComponent extends React.Component<Props, LocalState> {
                 }}
               />
             </TouchableOpacity>
-            <TouchableOpacity
-              onPress={this.flipCamera}
-              style={{ position: 'absolute', left: 0, bottom: 0 }}
-              hitSlop={{ left: 10, top: 10, right: 10, bottom: 10 }}>
-              <Image
-                source={require('../../resources/reverse-camera.png')}
-                style={{
-                  height: 32,
-                  width: 32,
-                  tintColor: Colors.deBtnStandardPrimaryLabel,
-                }}
-              />
-            </TouchableOpacity>
           </View>
         </SafeAreaView>
       </Camera>
@@ -187,11 +161,3 @@ class CameraComponent extends React.Component<Props, LocalState> {
     }
   }
 }
-
-const mapDispatchToProps = (dispatch: Dispatch): ActionProps => {
-  return {
-    changeImage: bindActionCreators(changeImage, dispatch),
-  };
-};
-
-export default connect(null, mapDispatchToProps)(CameraComponent);

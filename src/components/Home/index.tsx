@@ -1,28 +1,21 @@
 import React from 'react';
 import { View, SafeAreaView, Text } from 'react-native';
-import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { editWorkout } from '../../redux/actions';
-import { Dispatch, AppState } from '../../redux';
+import { AppState } from '../../redux';
 import { NavigationProps } from '../../navigation/rootNavigation';
 import { values } from '../../util';
 
-import Button from '../Button';
 import WorkoutList from '../WorkoutList';
 import { Workout } from '../../types';
 
 import styles from './style';
 import sharedStyles from '../sharedStyles';
 
-interface ActionProps {
-  readonly editWorkout: (workoutId: string | null) => void;
-}
-
 interface StateProps {
   readonly workouts: Workout[];
 }
 
-type Props = ActionProps & StateProps & NavigationProps;
+type Props = StateProps & NavigationProps;
 
 class Home extends React.PureComponent<Props> {
   static navigationOptions = {
@@ -30,7 +23,7 @@ class Home extends React.PureComponent<Props> {
   };
 
   newWorkout = () => {
-    this.props.editWorkout(null);
+    // TODO
   };
 
   render() {
@@ -51,23 +44,11 @@ class Home extends React.PureComponent<Props> {
               <Text style={styles.smallText}>Add a workout!</Text>
             </View>
           )}
-
-          <Button
-            title="Add Workout"
-            onPress={this.newWorkout}
-            style={styles.button}
-          />
         </SafeAreaView>
       </View>
     );
   }
 }
-
-const mapDispatchToProps = (dispatch: Dispatch): ActionProps => {
-  return {
-    editWorkout: bindActionCreators(editWorkout, dispatch),
-  };
-};
 
 const mapStateToProps = (state: AppState): StateProps => {
   const { workouts } = state;
@@ -77,4 +58,4 @@ const mapStateToProps = (state: AppState): StateProps => {
   };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(Home);
+export default connect(mapStateToProps)(Home);
