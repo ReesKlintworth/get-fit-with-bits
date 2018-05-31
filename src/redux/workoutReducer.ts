@@ -1,9 +1,6 @@
 import { ActionKeys, ActionTypes } from './actions';
 import { Workout } from '../types';
-
-export interface Workouts {
-  [workoutId: string]: Workout;
-}
+import { Workouts } from './stateTypes';
 
 const initialState = {};
 
@@ -17,7 +14,8 @@ export default function workoutsReducer(
         uuidv4(),
         action.payload.name,
         action.payload.type,
-        action.payload.date
+        action.payload.date,
+        action.payload.imageUri
       );
       return {
         ...state,
@@ -34,7 +32,8 @@ export default function workoutsReducer(
           existingWorkout.id,
           action.payload.name,
           action.payload.type,
-          existingWorkout.date
+          existingWorkout.date,
+          action.payload.imageUri
         );
         return {
           ...state,

@@ -4,19 +4,36 @@ import { Camera, Permissions, FileSystem, CameraObject } from 'expo';
 import { SafeAreaView } from 'react-navigation';
 import sharedStyles from '../sharedStyles';
 import Colors from '../../Colors';
+import Preview from './Preview';
+import { STORAGE_DIR, TEMP_PATH } from './constants';
+import { changeImage } from '../../redux/actions';
+import { NavigationProps } from '../../navigation/rootNavigation';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import { Dispatch } from '../../redux';
 
-const STORAGE_DIR = 'photos';
 const CAMERA_BACK = 'back';
 const CAMERA_FRONT = 'front';
+
+interface StateProps {
+  workoutId: string;
+}
+
+interface ActionProps {
+  readonly changeImage: (uri: string) => void;
+}
+
+type OwnProps = NavigationProps;
+
+type Props = ActionProps & StateProps & OwnProps;
 
 interface LocalState {
   type: string;
   hasCameraPermission: null | boolean;
-  // photoId: number;
   showImage: boolean;
 }
 
-export default class CameraComponent extends React.Component<{}, LocalState> {
+class CameraComponent extends React.Component<Props, LocalState> {
   camera: CameraObject | null;
 
   constructor(props: any) {
@@ -26,7 +43,6 @@ export default class CameraComponent extends React.Component<{}, LocalState> {
     this.state = {
       type: CAMERA_BACK,
       hasCameraPermission: null,
-      // photoId: 1,
       showImage: false,
     };
   }
@@ -69,20 +85,82 @@ export default class CameraComponent extends React.Component<{}, LocalState> {
 
   takePicture = async () => {
     if (this.camera) {
+      const imageDestination = `${FileSystem.documentDirectory}${TEMP_PATH}`;
       this.camera.takePictureAsync({}).then(data => {
-        FileSystem.moveAsync({
+        return FileSystem.moveAsync({
           from: data.uri,
-          // TODO - need to move image to permanent storage once it's accepted
-          to: `${FileSystem.documentDirectory}${STORAGE_DIR}/temp`,
+          to: imageDestination,
         }).then(() => {
           Vibration.vibrate(100, false);
           this.setState({
-            // photoId: this.state.photoId + 1,
             showImage: true,
           });
         });
       });
     }
+  };
+
+  acceptPhoto = (tempUri: string) => {
+    const now = new Date().getMilliseconds();
+    const finalDestination = `${
+      FileSystem.documentDirectory
+    }${STORAGE_DIR}/${now}.jpg`;
+    FileSystem.moveAsync({
+      from: tempUri,
+      to: finalDestination,
+    }).then(() => {
+      this.props.changeImage(finalDestination);
+    });
+  };
+
+  declinePhoto = () => {
+    this.setState({ showImage: false });
+  };
+
+  renderCamera = () => {
+    return (
+      <Camera
+        ref={(ref: any) => {
+          this.camera = ref;
+        }}
+        style={{ flex: 1 }}
+        type={this.state.type}>
+        <SafeAreaView style={sharedStyles.safeArea}>
+          <View
+            style={{
+              backgroundColor: 'transparent',
+              flexDirection: 'row',
+              justifyContent: 'center',
+              alignItems: 'center',
+              margin: 16,
+            }}>
+            <TouchableOpacity onPress={this.takePicture}>
+              <Image
+                source={require('../../resources/camera.png')}
+                style={{
+                  height: 44,
+                  width: 44,
+                  tintColor: Colors.deBtnStandardPrimaryLabel,
+                }}
+              />
+            </TouchableOpacity>
+            <TouchableOpacity
+              onPress={this.flipCamera}
+              style={{ position: 'absolute', left: 0, bottom: 0 }}
+              hitSlop={{ left: 10, top: 10, right: 10, bottom: 10 }}>
+              <Image
+                source={require('../../resources/reverse-camera.png')}
+                style={{
+                  height: 32,
+                  width: 32,
+                  tintColor: Colors.deBtnStandardPrimaryLabel,
+                }}
+              />
+            </TouchableOpacity>
+          </View>
+        </SafeAreaView>
+      </Camera>
+    );
   };
 
   render() {
@@ -92,51 +170,28 @@ export default class CameraComponent extends React.Component<{}, LocalState> {
     } else if (hasCameraPermission === false) {
       return <Text>No access to camera</Text>;
     } else {
+      const imageUri = `${FileSystem.documentDirectory}${TEMP_PATH}`;
       return (
         <View style={{ flex: 1 }}>
-          <SafeAreaView style={sharedStyles.safeArea}>
-            <Camera
-              ref={(ref: any) => {
-                this.camera = ref;
-              }}
-              style={{ flex: 1, justifyContent: 'flex-end' }}
-              type={this.state.type}>
-              <View
-                style={{
-                  backgroundColor: 'transparent',
-                  flexDirection: 'row',
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                  margin: 16,
-                }}>
-                <TouchableOpacity onPress={this.takePicture}>
-                  <Image
-                    source={require('../../resources/camera.png')}
-                    style={{
-                      height: 44,
-                      width: 44,
-                      tintColor: Colors.deBtnStandardPrimaryLabel,
-                    }}
-                  />
-                </TouchableOpacity>
-                <TouchableOpacity
-                  onPress={this.flipCamera}
-                  style={{ position: 'absolute', left: 0, bottom: 0 }}
-                  hitSlop={{ left: 10, top: 10, right: 10, bottom: 10 }}>
-                  <Image
-                    source={require('../../resources/reverse-camera.png')}
-                    style={{
-                      height: 32,
-                      width: 32,
-                      tintColor: Colors.deBtnStandardPrimaryLabel,
-                    }}
-                  />
-                </TouchableOpacity>
-              </View>
-            </Camera>
-          </SafeAreaView>
+          {this.state.showImage ? (
+            <Preview
+              imageUri={imageUri}
+              acceptPhoto={this.acceptPhoto}
+              declinePhoto={this.declinePhoto}
+            />
+          ) : (
+            this.renderCamera()
+          )}
         </View>
       );
     }
   }
 }
+
+const mapDispatchToProps = (dispatch: Dispatch): ActionProps => {
+  return {
+    changeImage: bindActionCreators(changeImage, dispatch),
+  };
+};
+
+export default connect(null, mapDispatchToProps)(CameraComponent);

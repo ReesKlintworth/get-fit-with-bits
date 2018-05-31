@@ -4,6 +4,7 @@ export class Workout {
     public id: string,
     public name: string,
     public type: string,
-    public date: Date
+    public date: Date,
+    public imageUri: string | null
   ) {}
 }

@@ -2,7 +2,7 @@ import React from 'react';
 import { View, SafeAreaView, Text } from 'react-native';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { newWorkout } from '../../redux/actions';
+import { editWorkout } from '../../redux/actions';
 import { Dispatch, AppState } from '../../redux';
 import { NavigationProps } from '../../navigation/rootNavigation';
 import { values } from '../../util';
@@ -15,7 +15,7 @@ import styles from './style';
 import sharedStyles from '../sharedStyles';
 
 interface ActionProps {
-  readonly newWorkout: () => void;
+  readonly editWorkout: (workoutId: string | null) => void;
 }
 
 interface StateProps {
@@ -30,7 +30,7 @@ class Home extends React.PureComponent<Props> {
   };
 
   newWorkout = () => {
-    this.props.newWorkout();
+    this.props.editWorkout(null);
   };
 
   render() {
@@ -65,7 +65,7 @@ class Home extends React.PureComponent<Props> {
 
 const mapDispatchToProps = (dispatch: Dispatch): ActionProps => {
   return {
-    newWorkout: bindActionCreators(newWorkout, dispatch),
+    editWorkout: bindActionCreators(editWorkout, dispatch),
   };
 };
 
