@@ -6,6 +6,7 @@ import {
   Keyboard,
   TouchableWithoutFeedback,
   Image,
+  ScrollView,
 } from 'react-native';
 import { NavigationProps } from '../../navigation/rootNavigation';
 import { connect } from 'react-redux';
@@ -109,7 +110,7 @@ class EditWorkout extends React.PureComponent<Props, LocalState> {
       <View style={styles.container}>
         <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
           <SafeAreaView style={sharedStyles.safeArea}>
-            <View style={styles.content}>
+            <ScrollView style={styles.content}>
               {!!this.state.message ? (
                 <View style={styles.messageContainer}>
                   <Text style={styles.message}>{this.state.message}</Text>
@@ -129,39 +130,28 @@ class EditWorkout extends React.PureComponent<Props, LocalState> {
                 style={styles.input}
               />
               {!!imageUri ? (
-                <Image
-                  source={{ uri: imageUri }}
-                  style={{
-                    width: 90,
-                    height: 160,
-                    resizeMode: 'contain',
-                    marginBottom: 24,
-                    alignSelf: 'center',
-                  }}
-                />
+                <Image source={{ uri: imageUri }} style={styles.image} />
               ) : null}
               <Button
                 style={styles.button}
                 onPress={this.goToCamera}
                 title={imageButtonText}
               />
-              <View style={styles.bottomButtonsContainer}>
-                {isEditing ? (
-                  <Button
-                    style={styles.button}
-                    onPress={this.deleteWorkout}
-                    title="Delete"
-                    destructive={true}
-                  />
-                ) : null}
+              <Button
+                style={styles.button}
+                disabled={buttonDisabled}
+                onPress={this.saveWorkout}
+                title={buttonText}
+              />
+              {isEditing ? (
                 <Button
                   style={styles.button}
-                  disabled={buttonDisabled}
-                  onPress={this.saveWorkout}
-                  title={buttonText}
+                  onPress={this.deleteWorkout}
+                  title="Delete"
+                  destructive={true}
                 />
-              </View>
-            </View>
+              ) : null}
+            </ScrollView>
           </SafeAreaView>
         </TouchableWithoutFeedback>
       </View>

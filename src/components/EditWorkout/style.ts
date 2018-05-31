@@ -22,6 +22,13 @@ export default StyleSheet.create({
   input: {
     marginBottom: 24,
   },
+  image: {
+    width: '100%',
+    height: 200,
+    resizeMode: 'contain',
+    marginBottom: 24,
+    alignSelf: 'center',
+  },
   messageContainer: {
     backgroundColor: Colors.utilityCritical,
     paddingHorizontal: 16,
@@ -37,13 +44,5 @@ export default StyleSheet.create({
   },
   button: {
     marginBottom: 8,
-  },
-  bottomButtonsContainer: {
-    position: 'absolute',
-    left: 0,
-    bottom: 0,
-    right: 0,
-    paddingBottom: 8,
-    paddingHorizontal: 16,
   },
 });
