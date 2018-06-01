@@ -1,13 +1,5 @@
 import React from 'react';
-import {
-  View,
-  SafeAreaView,
-  Text,
-  Keyboard,
-  TouchableWithoutFeedback,
-  Image,
-  ScrollView,
-} from 'react-native';
+import { View, SafeAreaView, Text, Image, ScrollView } from 'react-native';
 import { NavigationProps } from '../../navigation/rootNavigation';
 import { connect } from 'react-redux';
 import { AppRoutes } from '../../navigation/routes';
@@ -79,43 +71,41 @@ class EditWorkout extends React.PureComponent<Props, LocalState> {
 
     return (
       <View style={styles.container}>
-        <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-          <SafeAreaView style={sharedStyles.safeArea}>
-            <ScrollView style={styles.content}>
-              {!!this.state.message ? (
-                <View style={styles.messageContainer}>
-                  <Text style={styles.message}>{this.state.message}</Text>
-                </View>
-              ) : null}
-              <Text style={styles.prompt}>Workout Name</Text>
-              <Input
-                value={name}
-                onChangeText={this.nameChanged}
-                style={styles.input}
-              />
-              <Text style={styles.prompt}>Workout Type</Text>
-              <Input
-                value={type}
-                onChangeText={this.typeChanged}
-                style={styles.input}
-              />
-              {!!imageUri ? (
-                <Image source={{ uri: imageUri }} style={styles.image} />
-              ) : null}
-              <Button
-                style={styles.button}
-                onPress={this.goToCamera}
-                title={imageButtonText}
-              />
-              <Button
-                style={styles.button}
-                disabled={buttonDisabled}
-                onPress={this.saveWorkout}
-                title={buttonText}
-              />
-            </ScrollView>
-          </SafeAreaView>
-        </TouchableWithoutFeedback>
+        <SafeAreaView style={sharedStyles.safeArea}>
+          <ScrollView style={styles.content}>
+            {!!this.state.message ? (
+              <View style={styles.messageContainer}>
+                <Text style={styles.message}>{this.state.message}</Text>
+              </View>
+            ) : null}
+            <Text style={styles.prompt}>Workout Name</Text>
+            <Input
+              value={name}
+              onChangeText={this.nameChanged}
+              style={styles.input}
+            />
+            <Text style={styles.prompt}>Workout Type</Text>
+            <Input
+              value={type}
+              onChangeText={this.typeChanged}
+              style={styles.input}
+            />
+            {!!imageUri ? (
+              <Image source={{ uri: imageUri }} style={styles.image} />
+            ) : null}
+            <Button
+              style={styles.button}
+              onPress={this.goToCamera}
+              title={imageButtonText}
+            />
+            <Button
+              style={styles.button}
+              disabled={buttonDisabled}
+              onPress={this.saveWorkout}
+              title={buttonText}
+            />
+          </ScrollView>
+        </SafeAreaView>
       </View>
     );
   }
