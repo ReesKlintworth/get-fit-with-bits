@@ -7,6 +7,10 @@ import Colors from '../../Colors';
 import Preview from './Preview';
 import { STORAGE_DIR, TEMP_PATH } from './constants';
 import { NavigationProps } from '../../navigation/rootNavigation';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import { Dispatch } from '../../redux';
+import { changeImage } from '../../redux/actions';
 
 const CAMERA_BACK = 'back';
 // const CAMERA_FRONT = 'front';
@@ -15,9 +19,13 @@ interface StateProps {
   workoutId: string;
 }
 
+interface ActionProps {
+  readonly changeImage: (uri: string) => void;
+}
+
 type OwnProps = NavigationProps;
 
-type Props = StateProps & OwnProps;
+type Props = StateProps & OwnProps & ActionProps;
 
 interface LocalState {
   type: string;
@@ -25,10 +33,7 @@ interface LocalState {
   showImage: boolean;
 }
 
-export default class CameraComponent extends React.Component<
-  Props,
-  LocalState
-> {
+class CameraComponent extends React.Component<Props, LocalState> {
   camera: CameraObject | null;
 
   constructor(props: any) {
@@ -97,6 +102,8 @@ export default class CameraComponent extends React.Component<
     FileSystem.moveAsync({
       from: tempUri,
       to: finalDestination,
+    }).then(() => {
+      this.props.changeImage(finalDestination);
     });
   };
 
@@ -161,3 +168,11 @@ export default class CameraComponent extends React.Component<
     }
   }
 }
+
+const mapDispatchToProps = (dispatch: Dispatch): ActionProps => {
+  return {
+    changeImage: bindActionCreators(changeImage, dispatch),
+  };
+};
+
+export default connect(null, mapDispatchToProps)(CameraComponent);

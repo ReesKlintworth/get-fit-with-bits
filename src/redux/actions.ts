@@ -181,3 +181,14 @@ export const deleteWorkout = (id: string) => {
     dispatch(NavigationActions.back({}));
   };
 };
+
+export const changeImage = (uri: string) => {
+  return (dispatch: Dispatch) => {
+    const newWorkoutChangeImageUriAction: EditWorkoutChangeImageUri = {
+      type: ActionKeys.EditWorkoutChangeImageUri,
+      payload: uri,
+    };
+    dispatch(newWorkoutChangeImageUriAction);
+    dispatch(NavigationActions.back({}));
+  };
+};
