@@ -13,7 +13,7 @@ import { Dispatch } from '../../redux';
 import { changeImage } from '../../redux/actions';
 
 const CAMERA_BACK = 'back';
-// const CAMERA_FRONT = 'front';
+const CAMERA_FRONT = 'front';
 
 interface StateProps {
   workoutId: string;
@@ -94,6 +94,12 @@ class CameraComponent extends React.Component<Props, LocalState> {
     }
   };
 
+  flipCamera = () => {
+    this.setState({
+      type: this.state.type === CAMERA_BACK ? CAMERA_FRONT : CAMERA_BACK,
+    });
+  };
+
   acceptPhoto = (tempUri: string) => {
     const now = new Date().getMilliseconds();
     const finalDestination = `${
@@ -134,6 +140,19 @@ class CameraComponent extends React.Component<Props, LocalState> {
                 style={{
                   height: 44,
                   width: 44,
+                  tintColor: Colors.deBtnStandardPrimaryLabel,
+                }}
+              />
+            </TouchableOpacity>
+            <TouchableOpacity
+              onPress={this.flipCamera}
+              style={{ position: 'absolute', left: 0, bottom: 0 }}
+              hitSlop={{ left: 10, top: 10, right: 10, bottom: 10 }}>
+              <Image
+                source={require('../../resources/reverse-camera.png')}
+                style={{
+                  height: 32,
+                  width: 32,
                   tintColor: Colors.deBtnStandardPrimaryLabel,
                 }}
               />
