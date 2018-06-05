@@ -5,6 +5,7 @@ import { AppState } from '../../redux';
 import { NavigationProps } from '../../navigation/rootNavigation';
 import { values } from '../../util';
 
+import Button from '../Button';
 import WorkoutList from '../WorkoutList';
 import { Workout } from '../../types';
 
@@ -44,6 +45,12 @@ class Home extends React.PureComponent<Props> {
               <Text style={styles.smallText}>Add a workout!</Text>
             </View>
           )}
+
+          <Button
+            title="Add Workout"
+            onPress={this.newWorkout}
+            style={styles.button}
+          />
         </SafeAreaView>
       </View>
     );
