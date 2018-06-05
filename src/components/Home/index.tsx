@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, SafeAreaView, Text } from 'react-native';
 import { connect } from 'react-redux';
-import { AppState } from '../../redux';
+import { AppState, Dispatch } from '../../redux';
 import { NavigationProps } from '../../navigation/rootNavigation';
 import { values } from '../../util';
 
@@ -11,12 +11,18 @@ import { Workout } from '../../types';
 
 import styles from './style';
 import sharedStyles from '../sharedStyles';
+import { editWorkout } from '../../redux/actions';
+import { bindActionCreators } from 'redux';
 
 interface StateProps {
   readonly workouts: Workout[];
 }
 
-type Props = StateProps & NavigationProps;
+interface ActionProps {
+  readonly editWorkout: () => void;
+}
+
+type Props = StateProps & NavigationProps & ActionProps;
 
 class Home extends React.PureComponent<Props> {
   static navigationOptions = {
@@ -24,7 +30,7 @@ class Home extends React.PureComponent<Props> {
   };
 
   newWorkout = () => {
-    // TODO
+    this.props.editWorkout();
   };
 
   render() {
@@ -65,4 +71,10 @@ const mapStateToProps = (state: AppState): StateProps => {
   };
 };
 
-export default connect(mapStateToProps)(Home);
+const mapDispatchToProps = (dispatch: Dispatch): ActionProps => {
+  return {
+    editWorkout: bindActionCreators(editWorkout, dispatch),
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Home);
