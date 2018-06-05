@@ -10,4 +10,4 @@ https://code.visualstudio.com/
 
 [TypeScript Playground](https://github.com/SunburtReynolds/get-fit-with-bits/blob/9c54f2d8417bae72957eedfa3775578d744ac5d7/playground.ts#L1)
 
-[Full App Expo Link](exp://rr-btb.bclymer.get-fit-with-bits.exp.direct:80)
+Full App Expo Link - exp://rr-btb.bclymer.get-fit-with-bits.exp.direct:80
