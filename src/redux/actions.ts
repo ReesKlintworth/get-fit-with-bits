@@ -97,3 +97,13 @@ export const editWorkout = () => {
     );
   };
 };
+
+export const changeName = (name: string): EditWorkoutChangeName => ({
+  type: ActionKeys.EditWorkoutChangeName,
+  payload: name,
+});
+
+export const changeType = (type: string): EditWorkoutChangeType => ({
+  type: ActionKeys.EditWorkoutChangeType,
+  payload: type,
+});
