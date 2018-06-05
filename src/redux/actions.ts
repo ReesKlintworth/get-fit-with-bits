@@ -1,5 +1,5 @@
 import { NavigationAction, NavigationActions } from 'react-navigation';
-import { Dispatch } from './';
+import { Dispatch, AppState } from './';
 import { AppRoutes } from '../navigation/routes';
 
 export enum ActionKeys {
@@ -107,3 +107,33 @@ export const changeType = (type: string): EditWorkoutChangeType => ({
   type: ActionKeys.EditWorkoutChangeType,
   payload: type,
 });
+
+export const saveWorkout = (date: Date) => {
+  return (dispatch: Dispatch, getState: () => AppState) => {
+    const state = getState();
+    const { name, type, imageUri } = state.editWorkout;
+    if (!name || !type) {
+      return;
+    }
+
+    if (!!name && !!type) {
+      const addWorkoutAction: WorkoutAdd = {
+        type: ActionKeys.WorkoutAdd,
+        payload: {
+          name,
+          date,
+          imageUri,
+          type,
+        },
+      };
+      dispatch(addWorkoutAction);
+    }
+
+    const endEditWorkoutAction: EditWorkoutEnd = {
+      type: ActionKeys.EditWorkoutEnd,
+      payload: null,
+    };
+    dispatch(endEditWorkoutAction);
+    dispatch(NavigationActions.back({}));
+  };
+};
