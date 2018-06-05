@@ -11,7 +11,7 @@ import styles from './style';
 import sharedStyles from '../sharedStyles';
 import { Dispatch, AppState } from '../../redux';
 import { bindActionCreators } from 'redux';
-import { changeName, changeType } from '../../redux/actions';
+import { changeName, changeType, saveWorkout } from '../../redux/actions';
 
 type OwnProps = NavigationProps;
 
@@ -23,6 +23,7 @@ interface StateProps {
 }
 
 interface ActionProps {
+  readonly saveWorkout: (date: Date) => void;
   readonly changeName: (name: string) => void;
   readonly changeType: (type: string) => void;
 }
@@ -54,6 +55,7 @@ class EditWorkout extends React.PureComponent<Props, LocalState> {
     } else {
       this.setState({ message: null });
     }
+    this.props.saveWorkout(new Date());
   };
 
   goToCamera = () => {
@@ -131,6 +133,7 @@ const mapDispatchToProps = (dispatch: Dispatch): ActionProps => {
   return {
     changeName: bindActionCreators(changeName, dispatch),
     changeType: bindActionCreators(changeType, dispatch),
+    saveWorkout: bindActionCreators(saveWorkout, dispatch),
   };
 };
 

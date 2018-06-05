@@ -1,5 +1,6 @@
-import { ActionTypes } from './actions';
+import { ActionTypes, ActionKeys } from './actions';
 import { Workouts } from './stateTypes';
+import { Workout } from '../types';
 
 const initialState = {};
 
@@ -8,6 +9,18 @@ export default function workoutsReducer(
   action: ActionTypes
 ): Workouts {
   switch (action.type) {
+    case ActionKeys.WorkoutAdd:
+      const newWorkout = new Workout(
+        uuidv4(),
+        action.payload.name,
+        action.payload.type,
+        action.payload.date,
+        action.payload.imageUri
+      );
+      return {
+        ...state,
+        [newWorkout.id]: newWorkout,
+      };
     default:
       return state;
   }
