@@ -37,6 +37,10 @@ export default function workoutsReducer(
         };
       }
       return state;
+    case ActionKeys.WorkoutDelete:
+      const workoutsObjAfterDelete = { ...state };
+      delete workoutsObjAfterDelete[action.payload];
+      return workoutsObjAfterDelete;
     default:
       return state;
   }

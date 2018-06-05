@@ -11,7 +11,12 @@ import styles from './style';
 import sharedStyles from '../sharedStyles';
 import { Dispatch, AppState } from '../../redux';
 import { bindActionCreators } from 'redux';
-import { changeName, changeType, saveWorkout } from '../../redux/actions';
+import {
+  changeName,
+  changeType,
+  saveWorkout,
+  deleteWorkout,
+} from '../../redux/actions';
 
 type OwnProps = NavigationProps;
 
@@ -26,6 +31,7 @@ interface ActionProps {
   readonly saveWorkout: (params: { date?: Date; workoutId?: string }) => void;
   readonly changeName: (name: string) => void;
   readonly changeType: (type: string) => void;
+  readonly deleteWorkout: (workoutId: string) => void;
 }
 
 interface LocalState {
@@ -59,6 +65,13 @@ class EditWorkout extends React.PureComponent<Props, LocalState> {
       this.props.saveWorkout({ workoutId });
     } else {
       this.props.saveWorkout({ date: new Date() });
+    }
+  };
+
+  deleteWorkout = () => {
+    const { workoutId } = this.props;
+    if (workoutId) {
+      this.props.deleteWorkout(workoutId);
     }
   };
 
@@ -110,6 +123,14 @@ class EditWorkout extends React.PureComponent<Props, LocalState> {
               onPress={this.saveWorkout}
               title={buttonText}
             />
+            {isEditing ? (
+              <Button
+                style={styles.button}
+                onPress={this.deleteWorkout}
+                title="Delete"
+                destructive={true}
+              />
+            ) : null}
           </ScrollView>
         </SafeAreaView>
       </View>
@@ -142,6 +163,7 @@ const mapDispatchToProps = (dispatch: Dispatch): ActionProps => {
     changeName: bindActionCreators(changeName, dispatch),
     changeType: bindActionCreators(changeType, dispatch),
     saveWorkout: bindActionCreators(saveWorkout, dispatch),
+    deleteWorkout: bindActionCreators(deleteWorkout, dispatch),
   };
 };
 

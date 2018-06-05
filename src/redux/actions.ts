@@ -170,3 +170,14 @@ export const saveWorkout = (params: { date?: Date; workoutId?: string }) => {
     dispatch(NavigationActions.back({}));
   };
 };
+
+export const deleteWorkout = (id: string) => {
+  return (dispatch: Dispatch) => {
+    const deleteWorkoutAction: WorkoutDelete = {
+      type: ActionKeys.WorkoutDelete,
+      payload: id,
+    };
+    dispatch(deleteWorkoutAction);
+    dispatch(NavigationActions.back({}));
+  };
+};
