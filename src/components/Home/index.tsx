@@ -19,7 +19,7 @@ interface StateProps {
 }
 
 interface ActionProps {
-  readonly editWorkout: () => void;
+  readonly editWorkout: (workoutId: string | null) => void;
 }
 
 type Props = StateProps & NavigationProps & ActionProps;
@@ -30,7 +30,7 @@ class Home extends React.PureComponent<Props> {
   };
 
   newWorkout = () => {
-    this.props.editWorkout();
+    this.props.editWorkout(null);
   };
 
   render() {
@@ -38,7 +38,10 @@ class Home extends React.PureComponent<Props> {
       <View style={styles.container}>
         <SafeAreaView style={sharedStyles.safeArea}>
           {this.props.workouts.length > 0 ? (
-            <WorkoutList workouts={this.props.workouts} />
+            <WorkoutList
+              workouts={this.props.workouts}
+              editWorkout={this.props.editWorkout}
+            />
           ) : (
             <View
               style={{

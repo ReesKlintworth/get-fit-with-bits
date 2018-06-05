@@ -7,6 +7,7 @@ import styles from './style';
 
 interface Props {
   workouts: Workout[];
+  editWorkout: (workoutId: string) => void;
 }
 
 export default class WorkoutList extends React.PureComponent<Props> {
@@ -15,7 +16,9 @@ export default class WorkoutList extends React.PureComponent<Props> {
   };
 
   renderItem = ({ item: workout }: ListRenderItemInfo<Workout>) => {
-    return <WorkoutItem workout={workout} />;
+    return (
+      <WorkoutItem workout={workout} editWorkout={this.props.editWorkout} />
+    );
   };
 
   ItemSeparatorComponent = () => {

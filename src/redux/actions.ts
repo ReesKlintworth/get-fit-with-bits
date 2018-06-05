@@ -1,6 +1,7 @@
 import { NavigationAction, NavigationActions } from 'react-navigation';
 import { Dispatch, AppState } from './';
 import { AppRoutes } from '../navigation/routes';
+import { getWorkout } from './selectors';
 
 export enum ActionKeys {
   WorkoutAdd = 'WorkoutAdd',
@@ -78,21 +79,40 @@ export type ActionTypes =
   | EditWorkoutChangeImageUri
   | NavigationAction;
 
-export const editWorkout = () => {
-  return (dispatch: Dispatch) => {
+export const editWorkout = (workoutId: string | null) => {
+  return (dispatch: Dispatch, getState: () => AppState) => {
+    let payload: {
+      name: string;
+      type: string | null;
+      imageUri: string | null;
+    } = {
+      name: `${new Date().toLocaleDateString()} Workout`,
+      type: null,
+      imageUri: null,
+    };
+    if (!!workoutId) {
+      const state = getState();
+      const workout = getWorkout(state, workoutId);
+      if (!!workout) {
+        payload = {
+          name: workout.name,
+          type: workout.type,
+          imageUri: workout.imageUri,
+        };
+      }
+    }
     const beginEditWorkoutAction: EditWorkoutBegin = {
       type: ActionKeys.EditWorkoutBegin,
-      payload: {
-        name: `${new Date().toLocaleDateString()} Workout`,
-        type: null,
-        imageUri: null,
-      },
+      payload,
     };
     dispatch(beginEditWorkoutAction);
 
     dispatch(
       NavigationActions.navigate({
         routeName: AppRoutes.EditWorkout,
+        params: {
+          workoutId,
+        },
       })
     );
   };

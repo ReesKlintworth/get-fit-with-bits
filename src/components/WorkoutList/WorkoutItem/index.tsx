@@ -6,13 +6,14 @@ import styles from './style';
 
 interface OwnProps {
   workout: Workout;
+  editWorkout: (workoutId: string) => void;
 }
 
 type Props = OwnProps;
 
 export default class WorkoutItem extends React.PureComponent<Props> {
   tappedWorkout = () => {
-    // TODO
+    this.props.editWorkout(this.props.workout.id);
   };
 
   render() {

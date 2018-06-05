@@ -119,10 +119,14 @@ const DEFAULT_STATE_PROPS: StateProps = {
   type: '',
   imageUri: null,
 };
-const mapStateToProps = (state: AppState): StateProps => {
+const mapStateToProps = (state: AppState, ownProps: OwnProps): StateProps => {
+  const workoutId: string | undefined = ownProps.navigation.getParam(
+    'workoutId'
+  );
+
   const editWorkout = state.editWorkout;
   return {
-    workoutId: DEFAULT_STATE_PROPS.workoutId,
+    workoutId: workoutId || DEFAULT_STATE_PROPS.workoutId,
     name: editWorkout.name || DEFAULT_STATE_PROPS.name,
     type: editWorkout.type || DEFAULT_STATE_PROPS.type,
     imageUri: editWorkout.imageUri || DEFAULT_STATE_PROPS.imageUri,
