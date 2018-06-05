@@ -21,6 +21,22 @@ export default function workoutsReducer(
         ...state,
         [newWorkout.id]: newWorkout,
       };
+    case ActionKeys.WorkoutSave:
+      const existingWorkout = state[action.payload.workoutId];
+      if (existingWorkout) {
+        const editedWorkout = new Workout(
+          existingWorkout.id,
+          action.payload.name,
+          action.payload.type,
+          existingWorkout.date,
+          action.payload.imageUri
+        );
+        return {
+          ...state,
+          [editedWorkout.id]: editedWorkout,
+        };
+      }
+      return state;
     default:
       return state;
   }

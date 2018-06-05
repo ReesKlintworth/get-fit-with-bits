@@ -128,7 +128,7 @@ export const changeType = (type: string): EditWorkoutChangeType => ({
   payload: type,
 });
 
-export const saveWorkout = (date: Date) => {
+export const saveWorkout = (params: { date?: Date; workoutId?: string }) => {
   return (dispatch: Dispatch, getState: () => AppState) => {
     const state = getState();
     const { name, type, imageUri } = state.editWorkout;
@@ -136,17 +136,30 @@ export const saveWorkout = (date: Date) => {
       return;
     }
 
-    if (!!name && !!type) {
-      const addWorkoutAction: WorkoutAdd = {
-        type: ActionKeys.WorkoutAdd,
+    if (params.workoutId) {
+      const saveWorkoutAction: WorkoutSave = {
+        type: ActionKeys.WorkoutSave,
         payload: {
+          workoutId: params.workoutId,
           name,
-          date,
-          imageUri,
           type,
+          imageUri,
         },
       };
-      dispatch(addWorkoutAction);
+      dispatch(saveWorkoutAction);
+    } else if (params.date) {
+      if (!!name && !!type) {
+        const addWorkoutAction: WorkoutAdd = {
+          type: ActionKeys.WorkoutAdd,
+          payload: {
+            name,
+            date: params.date,
+            imageUri,
+            type,
+          },
+        };
+        dispatch(addWorkoutAction);
+      }
     }
 
     const endEditWorkoutAction: EditWorkoutEnd = {

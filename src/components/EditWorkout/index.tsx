@@ -23,7 +23,7 @@ interface StateProps {
 }
 
 interface ActionProps {
-  readonly saveWorkout: (date: Date) => void;
+  readonly saveWorkout: (params: { date?: Date; workoutId?: string }) => void;
   readonly changeName: (name: string) => void;
   readonly changeType: (type: string) => void;
 }
@@ -48,14 +48,18 @@ class EditWorkout extends React.PureComponent<Props, LocalState> {
   }
 
   saveWorkout = () => {
-    const { type } = this.props;
+    const { type, workoutId } = this.props;
     if (!type.length) {
       this.setState({ message: 'Please enter a workout type.' });
       return;
     } else {
       this.setState({ message: null });
     }
-    this.props.saveWorkout(new Date());
+    if (workoutId) {
+      this.props.saveWorkout({ workoutId });
+    } else {
+      this.props.saveWorkout({ date: new Date() });
+    }
   };
 
   goToCamera = () => {
