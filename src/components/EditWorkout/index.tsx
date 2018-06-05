@@ -9,6 +9,9 @@ import Input from '../Input';
 
 import styles from './style';
 import sharedStyles from '../sharedStyles';
+import { Dispatch, AppState } from '../../redux';
+import { bindActionCreators } from 'redux';
+import { changeName, changeType } from '../../redux/actions';
 
 type OwnProps = NavigationProps;
 
@@ -19,11 +22,16 @@ interface StateProps {
   imageUri: string | null;
 }
 
+interface ActionProps {
+  readonly changeName: (name: string) => void;
+  readonly changeType: (type: string) => void;
+}
+
 interface LocalState {
   message: string | null;
 }
 
-type Props = OwnProps & StateProps;
+type Props = OwnProps & StateProps & ActionProps;
 
 class EditWorkout extends React.PureComponent<Props, LocalState> {
   static navigationOptions = {
@@ -46,14 +54,6 @@ class EditWorkout extends React.PureComponent<Props, LocalState> {
     } else {
       this.setState({ message: null });
     }
-  };
-
-  nameChanged = () => {
-    // TODO
-  };
-
-  typeChanged = () => {
-    // TODO
   };
 
   goToCamera = () => {
@@ -81,13 +81,13 @@ class EditWorkout extends React.PureComponent<Props, LocalState> {
             <Text style={styles.prompt}>Workout Name</Text>
             <Input
               value={name}
-              onChangeText={this.nameChanged}
+              onChangeText={this.props.changeName}
               style={styles.input}
             />
             <Text style={styles.prompt}>Workout Type</Text>
             <Input
               value={type}
-              onChangeText={this.typeChanged}
+              onChangeText={this.props.changeType}
               style={styles.input}
             />
             {!!imageUri ? (
@@ -117,8 +117,21 @@ const DEFAULT_STATE_PROPS: StateProps = {
   type: '',
   imageUri: null,
 };
-const mapStateToProps = (): StateProps => {
-  return DEFAULT_STATE_PROPS;
+const mapStateToProps = (state: AppState): StateProps => {
+  const editWorkout = state.editWorkout;
+  return {
+    workoutId: DEFAULT_STATE_PROPS.workoutId,
+    name: editWorkout.name || DEFAULT_STATE_PROPS.name,
+    type: editWorkout.type || DEFAULT_STATE_PROPS.type,
+    imageUri: editWorkout.imageUri || DEFAULT_STATE_PROPS.imageUri,
+  };
 };
 
-export default connect(mapStateToProps)(EditWorkout);
+const mapDispatchToProps = (dispatch: Dispatch): ActionProps => {
+  return {
+    changeName: bindActionCreators(changeName, dispatch),
+    changeType: bindActionCreators(changeType, dispatch),
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(EditWorkout);
